@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Ehson | Profil</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-gray-100 to-white min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <header class="bg-white shadow sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto flex justify-between items-center p-4">
+      <h1 class="text-xl font-bold text-gray-700">E-Ehson</h1>
+      <nav class="flex gap-3">
+        <a href="register.html" class="px-3 py-2 bg-blue-600 text-white rounded">Ro‘yxatdan o‘tish</a>
+        <a href="login.html" class="px-3 py-2 bg-green-600 text-white rounded">Kirish</a>
+        <a href="profile.html" class="px-3 py-2 bg-gray-700 text-white rounded">Profil</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Profile Content -->
+  <main class="flex-grow flex items-center justify-center p-6">
+    <div class="bg-white shadow-lg rounded-xl p-6 w-full max-w-lg text-center">
+      <h2 class="text-2xl font-bold mb-4 text-gray-700">Foydalanuvchi profili</h2>
+      <div id="profileData" class="space-y-2 text-left text-gray-700"></div>
+      <button onclick="logout()" class="mt-4 px-4 py-2 bg-red-600 text-white rounded">Chiqish</button>
+    </div>
+  </main>
+
+  <script>
+  const user = JSON.parse(localStorage.getItem('eehson_user'));
+  const el = document.getElementById('profileData');
+  if (user) {
+    const created = new Date(user.createdAt);
+    const daysActive = Math.floor((Date.now() - created.getTime()) / (1000*60*60*24));
+    el.innerHTML = `
+      <p><b>Ism:</b> ${user.firstName}</p>
+      <p><b>Familiya:</b> ${user.lastName}</p>
+      <p><b>Shahar:</b> ${user.city}</p>
+      <p><b>Tuman:</b> ${user.district}</p>
+      <p><b>Telefon:</b> ${user.phone}</p>
+      <p><b>Rol:</b> ${user.role}</p>
+      <p><b>ID:</b> ${user.id}</p>
+      <p><b>Faol kunlar:</b> ${daysActive} kun</p>
+    `;
+  } else {
+    el.innerHTML = `<p class="text-red-500 text-center">Foydalanuvchi topilmadi! Iltimos <a href="register.html" class="text-blue-600 underline">ro‘yxatdan o‘ting</a>.</p>`;
+  }
+
+  function logout() {
+    localStorage.removeItem('eehson_user');
+    alert("Chiqildi!");
+    window.location.href = 'login.html';
+  }
+  </script>
+</body>
+</html>

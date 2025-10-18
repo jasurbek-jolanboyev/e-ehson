@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Ehson | Ro‘yxatdan o‘tish</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-sky-100 to-white min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <header class="bg-white shadow sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto flex justify-between items-center p-4">
+      <h1 class="text-xl font-bold text-blue-700">E-Ehson</h1>
+      <nav class="flex gap-3">
+        <a href="register.html" class="px-3 py-2 bg-blue-600 text-white rounded">Ro‘yxatdan o‘tish</a>
+        <a href="login.html" class="px-3 py-2 bg-green-600 text-white rounded">Kirish</a>
+        <a href="profile.html" class="px-3 py-2 bg-gray-700 text-white rounded">Profil</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Form -->
+  <main class="flex-grow flex items-center justify-center p-6">
+    <div class="bg-white shadow-lg rounded-xl p-6 w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-4 text-center text-blue-700">One ID orqali ro‘yxatdan o‘tish</h2>
+      <form id="registerForm" class="space-y-3">
+        <input name="firstName" type="text" placeholder="Ism" required class="w-full p-2 border rounded">
+        <input name="lastName" type="text" placeholder="Familiya" required class="w-full p-2 border rounded">
+        <input name="city" type="text" placeholder="Shahar" required class="w-full p-2 border rounded">
+        <input name="district" type="text" placeholder="Tuman" required class="w-full p-2 border rounded">
+        <input name="phone" type="text" placeholder="Telefon raqam" required class="w-full p-2 border rounded">
+        <input name="passport" type="text" placeholder="Passport seriya/raqam" class="w-full p-2 border rounded">
+        <select name="role" class="w-full p-2 border rounded" required>
+          <option value="">Rolni tanlang</option>
+          <option value="donor">Yordam beruvchi</option>
+          <option value="beneficiary">Yordam oluvchi</option>
+        </select>
+        <input name="password" type="password" placeholder="Parol o‘ylab toping" required class="w-full p-2 border rounded">
+        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">Ro‘yxatdan o‘tish</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+  document.getElementById('registerForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const user = Object.fromEntries(fd.entries());
+    user.id = 'EH-' + Math.floor(Math.random() * 900000 + 100000);
+    user.createdAt = new Date().toISOString();
+    localStorage.setItem('eehson_user', JSON.stringify(user));
+    alert("Ro‘yxatdan o‘tish muvaffaqiyatli! Profil sahifasiga yo‘naltirilasiz.");
+    window.location.href = 'profile.html';
+  });
+  </script>
+</body>
+</html>

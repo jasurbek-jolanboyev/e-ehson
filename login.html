@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Ehson | Kirish</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-green-100 to-white min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <header class="bg-white shadow sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto flex justify-between items-center p-4">
+      <h1 class="text-xl font-bold text-green-700">E-Ehson</h1>
+      <nav class="flex gap-3">
+        <a href="register.html" class="px-3 py-2 bg-blue-600 text-white rounded">Ro‘yxatdan o‘tish</a>
+        <a href="login.html" class="px-3 py-2 bg-green-600 text-white rounded">Kirish</a>
+        <a href="profile.html" class="px-3 py-2 bg-gray-700 text-white rounded">Profil</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Form -->
+  <main class="flex-grow flex items-center justify-center p-6">
+    <div class="bg-white shadow-lg rounded-xl p-6 w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-4 text-center text-green-700">Hisobga kirish</h2>
+      <form id="loginForm" class="space-y-3">
+        <input id="phone" type="text" placeholder="Telefon raqam" required class="w-full p-2 border rounded">
+        <input id="password" type="password" placeholder="Parol" required class="w-full p-2 border rounded">
+        <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded">Kirish</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+  document.getElementById('loginForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const user = JSON.parse(localStorage.getItem('eehson_user'));
+    if (!user) return alert("Avval ro‘yxatdan o‘ting!");
+    const phone = document.getElementById('phone').value;
+    const pass = document.getElementById('password').value;
+    if (user.phone === phone && user.password === pass) {
+      alert("Kirish muvaffaqiyatli!");
+      window.location.href = 'profile.html';
+    } else {
+      alert("Telefon yoki parol noto‘g‘ri!");
+    }
+  });
+  </script>
+</body>
+</html>
