@@ -3,56 +3,195 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Ehson | Profil</title>
+  <title>E-Ehson | Profil (Blockchain + Karta tizimi)</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-up {
+      animation: fadeInUp 0.7s ease forwards;
+    }
+  </style>
 </head>
 <body class="bg-gradient-to-b from-gray-100 to-white min-h-screen flex flex-col">
+
   <!-- Navbar -->
-  <header class="bg-white shadow sticky top-0 z-40">
-    <div class="max-w-5xl mx-auto flex justify-between items-center p-4">
-      <h1 class="text-xl font-bold text-gray-700">E-Ehson</h1>
-      <nav class="flex gap-3">
-        <a href="register.html" class="px-3 py-2 bg-blue-600 text-white rounded">Ro‘yxatdan o‘tish</a>
-        <a href="login.html" class="px-3 py-2 bg-green-600 text-white rounded">Kirish</a>
-        <a href="profile.html" class="px-3 py-2 bg-gray-700 text-white rounded">Profil</a>
-      </nav>
+  <header class="bg-white shadow sticky top-0 z-40 fade-in-up">
+    <div class="max-w-6xl mx-auto flex justify-between items-center p-4">
+      <h1 class="text-2xl font-bold text-blue-700">🌍 e-Ehson</h1>
+      <div class="flex items-center space-x-3">
+        <button onclick="window.location.href='register.html'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ro‘yxatdan o‘tish</button>
+        <button onclick="window.location.href='login.html'" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Kirish</button>
+        <button onclick="window.location.href='profile.html'" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800">Profil</button>
+      </div>
     </div>
   </header>
 
-  <!-- Profile Content -->
-  <main class="flex-grow flex items-center justify-center p-6">
-    <div class="bg-white shadow-lg rounded-xl p-6 w-full max-w-lg text-center">
-      <h2 class="text-2xl font-bold mb-4 text-gray-700">Foydalanuvchi profili</h2>
-      <div id="profileData" class="space-y-2 text-left text-gray-700"></div>
-      <button onclick="logout()" class="mt-4 px-4 py-2 bg-red-600 text-white rounded">Chiqish</button>
+  <!-- Profile content -->
+  <main class="flex-grow flex justify-center p-6 fade-in-up">
+    <div class="bg-white shadow-2xl rounded-3xl p-8 w-full max-w-5xl">
+
+      <!-- User Info -->
+      <div class="flex flex-col md:flex-row md:items-center gap-6 mb-8">
+        <img src="https://i.pravatar.cc/150?img=11" alt="Avatar" class="w-28 h-28 rounded-full shadow-lg border-4 border-blue-200 animate-pulse mx-auto md:mx-0">
+        <div class="flex-1 text-center md:text-left">
+          <h2 class="text-3xl font-extrabold text-blue-700">Jasurbek Jolanboyev</h2>
+          <p class="text-gray-600">🆔 <b>ID:</b> EH-102394</p>
+          <p class="text-gray-600">🎭 <b>Rol:</b> Yordam beruvchi (Donor)</p>
+          <p class="text-gray-600">📅 <b>Faol:</b> 28 kun</p>
+        </div>
+      </div>
+
+      <!-- Card Section -->
+      <div class="border-t pt-6 mb-8 fade-in-up">
+        <h3 class="text-2xl font-semibold text-gray-700 mb-3">💳 Karta ma’lumotlari</h3>
+        <div id="cardsList" class="space-y-3 bg-gray-50 border rounded-xl p-4 text-gray-700 shadow-inner"></div>
+        <button onclick="window.location.href='add-card.html'" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded transition-transform transform hover:scale-105">
+          ➕ Yangi karta qo‘shish
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 text-center fade-in-up">
+        <div class="bg-blue-50 rounded-lg p-4 shadow hover:shadow-md transition">
+          <p class="text-2xl font-bold text-blue-700 counter" data-target="3100000">0</p>
+          <p class="text-sm text-gray-500">Umumiy xayriya (so‘m)</p>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4 shadow hover:shadow-md transition">
+          <p class="text-2xl font-bold text-green-700 counter" data-target="58">0</p>
+          <p class="text-sm text-gray-500">Yordam berganlar</p>
+        </div>
+        <div class="bg-yellow-50 rounded-lg p-4 shadow hover:shadow-md transition">
+          <p class="text-2xl font-bold text-yellow-700 counter" data-target="28">0</p>
+          <p class="text-sm text-gray-500">Faol kunlar</p>
+        </div>
+        <div class="bg-purple-50 rounded-lg p-4 shadow hover:shadow-md transition">
+          <p class="text-2xl font-bold text-purple-700 counter" data-target="6">0</p>
+          <p class="text-sm text-gray-500">Reyting o‘rni</p>
+        </div>
+      </div>
+
+      <!-- Donation Chart -->
+      <div class="mb-10 fade-in-up">
+        <h3 class="text-xl font-semibold text-gray-700 mb-2">📊 So‘nggi 7 kunda xayriya miqdori</h3>
+        <canvas id="chart" height="100"></canvas>
+      </div>
+
+      <!-- Blockchain Section -->
+      <div class="border-t pt-6 mb-8 fade-in-up">
+        <h3 class="text-xl font-semibold text-gray-700 mb-3">🔗 Blockchain Ledger (Shaffoflik)</h3>
+        <div id="ledger" class="bg-gray-50 border rounded-lg p-4 text-xs text-gray-700 overflow-auto h-40 shadow-inner"></div>
+      </div>
+
+      <!-- Donation History -->
+      <div class="border-t pt-6 fade-in-up">
+        <h3 class="text-xl font-semibold text-gray-700 mb-3">🕊️ So‘nggi to‘lovlar</h3>
+        <ul class="space-y-2 text-sm text-gray-700">
+          <li class="flex justify-between"><span>[2025-10-18] Tibbiyot yordam markazi</span><b class="text-green-700">100 000 so‘m</b></li>
+          <li class="flex justify-between"><span>[2025-10-15] Nogironlar jamiyati</span><b class="text-green-700">300 000 so‘m</b></li>
+          <li class="flex justify-between"><span>[2025-10-12] Yetim bolalar fondi</span><b class="text-green-700">500 000 so‘m</b></li>
+        </ul>
+      </div>
+
+      <!-- Logout -->
+      <div class="text-center mt-8 fade-in-up">
+        <button onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white px-8 py-2 rounded-full shadow-lg transition-transform transform hover:scale-105">
+          🔒 Chiqish
+        </button>
+      </div>
+
     </div>
   </main>
 
+  <!-- JS Section -->
   <script>
-  const user = JSON.parse(localStorage.getItem('eehson_user'));
-  const el = document.getElementById('profileData');
-  if (user) {
-    const created = new Date(user.createdAt);
-    const daysActive = Math.floor((Date.now() - created.getTime()) / (1000*60*60*24));
-    el.innerHTML = `
-      <p><b>Ism:</b> ${user.firstName}</p>
-      <p><b>Familiya:</b> ${user.lastName}</p>
-      <p><b>Shahar:</b> ${user.city}</p>
-      <p><b>Tuman:</b> ${user.district}</p>
-      <p><b>Telefon:</b> ${user.phone}</p>
-      <p><b>Rol:</b> ${user.role}</p>
-      <p><b>ID:</b> ${user.id}</p>
-      <p><b>Faol kunlar:</b> ${daysActive} kun</p>
-    `;
-  } else {
-    el.innerHTML = `<p class="text-red-500 text-center">Foydalanuvchi topilmadi! Iltimos <a href="register.html" class="text-blue-600 underline">ro‘yxatdan o‘ting</a>.</p>`;
-  }
+    // 💳 Kartalarni chiqarish
+    const cards = JSON.parse(localStorage.getItem('eehson_cards')) || [];
+    const cardsList = document.getElementById('cardsList');
 
-  function logout() {
-    localStorage.removeItem('eehson_user');
-    alert("Chiqildi!");
-    window.location.href = 'login.html';
-  }
+    if (cards.length > 0) {
+      cardsList.innerHTML = cards.map(card => {
+        const hidden = card.number.replace(/\d{12}(\d{4})/, '**** **** **** $1');
+        return `
+          <div class="bg-white p-3 rounded-xl shadow flex justify-between items-center hover:scale-[1.01] transition-transform">
+            <div>
+              <p><b>${card.type}</b> — ${hidden}</p>
+              <p class="text-sm text-gray-500">Amal: ${card.expiry}</p>
+              <p class="text-sm text-green-700 font-semibold">Balans: ${card.balance.toLocaleString()} so‘m</p>
+            </div>
+            <img src="https://cdn-icons-png.flaticon.com/512/633/633611.png" class="w-10 h-10 opacity-80" alt="card-icon">
+          </div>`;
+      }).join('');
+    } else {
+      cardsList.innerHTML = `<p class="text-gray-500 text-center">Hozircha karta qo‘shilmagan.</p>`;
+    }
+
+    // 📊 Chart.js - Xayriya trendlari
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Oct 12', 'Oct 13', 'Oct 14', 'Oct 15', 'Oct 16', 'Oct 17', 'Oct 18'],
+        datasets: [{
+          data: [90000, 120000, 150000, 110000, 180000, 200000, 150000],
+          borderColor: '#2563eb',
+          backgroundColor: 'rgba(37,99,235,0.3)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+
+    // 🔗 Blockchain yozuvlarini animatsiya bilan chiqarish
+    const ledger = document.getElementById('ledger');
+    const txs = [
+      { hash: "0x1af34", to: "Tibbiyot yordam markazi", amount: "100 000 so‘m" },
+      { hash: "0x2c88a", to: "Nogironlar jamiyati", amount: "300 000 so‘m" },
+      { hash: "0x3d472", to: "Yetim bolalar fondi", amount: "500 000 so‘m" }
+    ];
+    let i = 0;
+    function addTx() {
+      if (i < txs.length) {
+        const tx = txs[i];
+        const p = document.createElement("p");
+        p.className = "text-gray-700 mb-1 fade-in-up";
+        p.innerHTML = `<b>[TX-${tx.hash}]</b> → ${tx.amount} → ${tx.to} ✅`;
+        ledger.appendChild(p);
+        i++;
+        setTimeout(addTx, 1000);
+      }
+    }
+    addTx();
+
+    // 🔢 Raqam animatsiyasi (counter)
+    document.querySelectorAll(".counter").forEach(counter => {
+      const update = () => {
+        const target = +counter.getAttribute("data-target");
+        const current = +counter.innerText;
+        const inc = target / 50;
+        if (current < target) {
+          counter.innerText = Math.ceil(current + inc);
+          setTimeout(update, 30);
+        } else {
+          counter.innerText = target.toLocaleString();
+        }
+      };
+      update();
+    });
+
+    function logout() {
+      alert("Tizimdan chiqildi.");
+      window.location.href = 'login.html';
+    }
   </script>
+
 </body>
 </html>

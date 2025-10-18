@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karta qo‘shish | e-Ehson</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-blue-50 to-white min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="bg-white shadow sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto flex justify-between items-center p-4">
+      <h1 class="text-xl font-bold text-blue-700">E-Ehson</h1>
+      <div class="flex items-center space-x-3">
+        <button onclick="window.location.href='register.html'" class="bg-blue-600 text-white px-4 py-2 rounded">Ro‘yxatdan o‘tish</button>
+        <button onclick="window.location.href='login.html'" class="bg-green-600 text-white px-4 py-2 rounded">Kirish</button>
+        <button onclick="window.location.href='profile.html'" class="bg-gray-700 text-white px-4 py-2 rounded">Profil</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="flex-grow flex items-center justify-center p-6">
+    <div class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
+      <h2 class="text-2xl font-bold text-center text-blue-700 mb-6">Yangi karta qo‘shish</h2>
+      <form id="cardForm" class="space-y-4">
+        <div>
+          <label class="block text-gray-700 mb-1">Karta raqami</label>
+          <input type="text" id="cardNumber" maxlength="16" placeholder="8600 XXXX XXXX XXXX" class="w-full p-2 border rounded" required>
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-1">Amal qilish muddati</label>
+          <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" class="w-full p-2 border rounded" required>
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-1">Karta egasi</label>
+          <input type="text" id="owner" placeholder="Ism Familya" class="w-full p-2 border rounded" required>
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-1">Karta turi</label>
+          <select id="type" class="w-full p-2 border rounded" required>
+            <option value="">Tanlang</option>
+            <option>Humo</option>
+            <option>Uzcard</option>
+            <option>Uzum</option>
+            <option>Payme</option>
+            <option>Click</option>
+            <option>Visa</option>
+            <option>MasterCard</option>
+            <option>ZoodPay</option>
+            <option>Apelsin</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">Karta qo‘shish</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('cardForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const cardNumber = document.getElementById('cardNumber').value;
+      const expiry = document.getElementById('expiry').value;
+      const owner = document.getElementById('owner').value;
+      const type = document.getElementById('type').value;
+
+      // Avtomatik balans aniqlanadi (demo uchun)
+      const balance = Math.floor(Math.random() * 10000000) + 100000; // 100 ming - 10 mln oralig‘ida
+
+      // Avvalgi kartalarni olish
+      const existing = JSON.parse(localStorage.getItem('eehson_cards')) || [];
+
+      // Yangi karta
+      const newCard = { number: cardNumber, expiry, owner, type, balance };
+      existing.push(newCard);
+
+      // Saqlash
+      localStorage.setItem('eehson_cards', JSON.stringify(existing));
+
+      alert(`Karta (${type}) muvaffaqiyatli qo‘shildi!`);
+      window.location.href = 'profile.html';
+    });
+  </script>
+</body>
+</html>
